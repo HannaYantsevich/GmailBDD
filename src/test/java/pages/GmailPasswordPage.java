@@ -7,7 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class GmailPasswordPage extends AbstractedPage {
+
     private static final String PASSWORD = "PasswordPassword";
+
     public GmailPasswordPage(Browser browser) {
         super(browser);
     }

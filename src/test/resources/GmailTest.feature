@@ -1,16 +1,20 @@
 Feature: GmailTest
 
   Background:
-    Given I opened LogInPage
+    Given  I Logged into the gmail account
 
-  Scenario Outline: Log In Under account
+  Scenario: Create draft email
+    When I Compose new email
+    And I Close email
+    And I open Drafts
+    Then I see that this email is saved in drafts
 
-    When I entered email
-    And I opened GmailPasswordPage entered password
-    Then I opened GmailMainPage
 
-    Examples:
-      | email                 | password         |
-      | HannaTest34@gmail.com | PasswordPassword |
+  Scenario: Send email from drafts
+    When I Compose new email
+    And I Close email
+    And I send email from Drafts
+    And I open Sent folder
+    Then I see that this email appeared in Sent folder
 
 

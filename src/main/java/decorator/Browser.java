@@ -17,8 +17,7 @@ public class Browser implements WebDriver {
     protected JavascriptExecutor jsExecutor;
     private static final int WAIT_FOR_ELEMENT_SECONDS = 20;
     private static final String SCREENSHOTS_NAME_TPL = "Screenshots/src";
-    public static org.apache.log4j.Logger log = Logger.getLogger(Browser.class);
-
+    private static Logger log = Logger.getLogger(Browser.class);
 
     public Browser(WebDriver driver) {
         this.jsExecutor = (JavascriptExecutor) (driver);
@@ -118,7 +117,7 @@ public class Browser implements WebDriver {
     }
 
 
-    protected void waitForElementPresent(WebElement elem) {
+    public void waitForElementPresent(WebElement elem) {
         new WebDriverWait(driver, WAIT_FOR_ELEMENT_SECONDS)
                 .until(ExpectedConditions.visibilityOf(elem));
     }

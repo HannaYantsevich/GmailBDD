@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
+import static utils.RandomString.getRandomString;
+
 public class GmailMainPage extends AbstractedPage {
 
     @FindBy(xpath = "//span[@class='ait']/div[@class='G-asx T-I-J3 J-J5-Ji']")
@@ -52,6 +54,11 @@ public class GmailMainPage extends AbstractedPage {
     @FindBy(xpath = "//input[@placeholder = 'Search mail']")
     private WebElement searchField;
 
+    private static final String EMAIL_SUBJECT = getRandomString(10);
+    private static final String EMAIL_BODY = getRandomString(20);
+    private static final String RECIPIENT_EMAIL = "h.yantsevich@gmail.com";
+
+
     public GmailMainPage(Browser browser) {
         super(browser);
     }
@@ -94,6 +101,14 @@ public class GmailMainPage extends AbstractedPage {
         return new GmailMainPage(browser);
     }
 
+    public GmailMainPage fillRecipentInput() {
+        browser.waitForElementVisible(recipientInput);
+        browser.highlightElement(recipientInput);
+        recipientInput.sendKeys(RECIPIENT_EMAIL);
+        browser.unhighlightElement(recipientInput);
+        return new GmailMainPage(browser);
+    }
+
     public GmailMainPage fillSubjectInput(User user) {
         browser.waitForElementVisible(subjectInput);
         browser.highlightElement(subjectInput);
@@ -102,9 +117,23 @@ public class GmailMainPage extends AbstractedPage {
         return this;
     }
 
+    public GmailMainPage fillSubjectInput() {
+        browser.waitForElementVisible(subjectInput);
+        browser.highlightElement(subjectInput);
+        subjectInput.sendKeys(EMAIL_SUBJECT);
+        browser.unhighlightElement(subjectInput);
+        return this;
+    }
+
     public GmailMainPage fillBodyInput(User user) {
         browser.waitForElementVisible(bodyInput);
         bodyInput.sendKeys(user.getBodyInput());
+        return this;
+    }
+
+    public GmailMainPage fillBodyInput() {
+        browser.waitForElementVisible(bodyInput);
+        bodyInput.sendKeys(EMAIL_BODY);
         return this;
     }
 
@@ -124,7 +153,12 @@ public class GmailMainPage extends AbstractedPage {
         return browser.findElement(By.xpath(String.format(
                 "//span[contains(text(), 'Draft')]/following::span[contains(text(), '%s')]/following::span[contains(text(), '%2s')]", emailSubject,emailBody))).isDisplayed();
     }
-
+    public boolean isEmailAppearedInDrafts() {
+        browser.waitForElementVisible(By.xpath(String.format(
+                "//span[contains(text(), 'Draft')]/following::span[contains(text(), '%s')]/following::span[contains(text(), '%2s')]", EMAIL_SUBJECT, EMAIL_BODY)));
+        return browser.findElement(By.xpath(String.format(
+                "//span[contains(text(), 'Draft')]/following::span[contains(text(), '%s')]/following::span[contains(text(), '%2s')]", EMAIL_SUBJECT,EMAIL_BODY))).isDisplayed();
+    }
 
     public GmailMainPage clickOnDraftEmail(String emailSubject, String emailBody) {
         browser.waitForElementAndClick(browser, By.xpath(String.format(
@@ -132,6 +166,11 @@ public class GmailMainPage extends AbstractedPage {
         return this;
     }
 
+    public GmailMainPage clickOnDraftEmail() {
+        browser.waitForElementAndClick(browser, By.xpath(String.format(
+                "//span[contains(text(), 'Draft')]/following::span[contains(text(), '%1s')]/following::span[contains(text(), '%2s')]", EMAIL_SUBJECT,EMAIL_BODY)));
+        return this;
+    }
     public GmailMainPage sendEmail() {
         browser.waitForElementAndClick(sendButton);
         return this;
@@ -147,6 +186,11 @@ public class GmailMainPage extends AbstractedPage {
                 "//span[contains(text(), 'h.yantsevich')]/following::span[contains(text(), '%1s')]/following::span[contains(text(), '%2s')]", emailSubject, emailBody)));
         return browser.findElement(By.xpath(String.format("//span[contains(text(), 'h.yantsevich')]/following::span[contains(text(), '%1s')]/following::span[contains(text(), '%2s')]", emailSubject, emailBody))).isDisplayed();
     }
+    public boolean isEmailAppearedInSentFolder() {
+        browser.waitForElementVisible(By.xpath(String.format(
+                "//span[contains(text(), 'h.yantsevich')]/following::span[contains(text(), '%1s')]/following::span[contains(text(), '%2s')]", EMAIL_SUBJECT, EMAIL_BODY)));
+        return browser.findElement(By.xpath(String.format("//span[contains(text(), 'h.yantsevich')]/following::span[contains(text(), '%1s')]/following::span[contains(text(), '%2s')]", EMAIL_SUBJECT, EMAIL_BODY))).isDisplayed();
+    }
 
     public boolean isEmailDisappearedFromDrafts(String emailSubject, String emailBody) {
         browser.waitForElementInvisible(By.xpath(String.format(
@@ -154,8 +198,6 @@ public class GmailMainPage extends AbstractedPage {
         return browser.findElement(By.xpath(String.format(
                 "//span[contains(text(), 'Draft')]/following::span[contains(text(), '%1s')]/following::span[contains(text(), '%2s')]", emailSubject, emailBody))).isDisplayed();
     }
-
-
 
     public GmailMainPage clickOnImageButton() {
         browser.waitForElementAndClick(imageButton);
