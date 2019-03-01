@@ -1,4 +1,4 @@
-package utils;
+package stepdefs;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -8,55 +8,51 @@ import org.testng.Assert;
 import pages.GmailLoginPage;
 import pages.GmailMainPage;
 import pages.GmailPasswordPage;
-import singleton.BrowserSingleton;
 
 public class MyStepdefs {
 
     @Given("^I Logged into the gmail account$")
     public void iOpenedLogInPage() {
-        new GmailLoginPage(BrowserSingleton.getBrowser());
-        new GmailLoginPage(BrowserSingleton.getBrowser()).pressSigninButton().fillEmailIInput().pressNextButton();
-        new GmailPasswordPage(BrowserSingleton.getBrowser()).fillGmailPasswordInput().pressPasswordNextButton();
-        new GmailMainPage(BrowserSingleton.getBrowser());
+        new GmailLoginPage().pressSignInButton().fillEmailIInput().pressNextButton();
+        new GmailPasswordPage().fillGmailPasswordInput().pressPasswordNextButton();
     }
-
 
     @When("^I Compose new email$")
     public void iComposeNewEmail() {
-        new GmailMainPage(BrowserSingleton.getBrowser()).pressComposeButton()
-                .fillRecipentInput()
+        new GmailMainPage().pressComposeButton()
+                .fillRecipientInput()
                 .fillSubjectInput()
                 .fillBodyInput();
     }
 
     @And("^I Close email$")
     public void iCloseThisEmail() {
-        new GmailMainPage(BrowserSingleton.getBrowser()).saveAndCloseEmail();
+        new GmailMainPage().saveAndCloseEmail();
     }
 
     @And("^I send email from Drafts$")
     public void iSendWEmailFromDrafrs() {
-        new GmailMainPage(BrowserSingleton.getBrowser()).clickOnDraftsLink().clickOnDraftEmail().sendEmail();
+        new GmailMainPage().clickOnDraftsLink().clickOnDraftEmail().sendEmail();
     }
 
     @Then("^I see that this email is saved in drafts$")
     public void iSeeThatThisEmailIsSavedInDrafts() {
-        Assert.assertTrue(new GmailMainPage(BrowserSingleton.getBrowser()).isEmailAppearedInDrafts());
+        Assert.assertTrue(new GmailMainPage().isEmailAppearedInDrafts());
     }
 
     @And("^I open Sent folder$")
     public void iOpenSentFolder() {
-        new GmailMainPage(BrowserSingleton.getBrowser()).clickOnSentLink();
+        new GmailMainPage().clickOnSentLink();
     }
 
     @Then("^I see that this email appeared in Sent folder$")
     public void iSeeThatThisEmailAppearedInSentFolder() {
-        Assert.assertTrue(new GmailMainPage(BrowserSingleton.getBrowser()).isEmailAppearedInSentFolder());
+        Assert.assertTrue(new GmailMainPage().isEmailAppearedInSentFolder());
     }
 
     @And("^I open Drafts$")
     public void iOpenDrafts() {
-        new GmailMainPage(BrowserSingleton.getBrowser()).clickOnDraftsLink();
+        new GmailMainPage().clickOnDraftsLink();
     }
 }
 

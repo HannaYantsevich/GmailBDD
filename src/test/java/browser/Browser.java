@@ -1,13 +1,22 @@
-package decorator;
+package browser;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -108,6 +117,16 @@ public class Browser implements WebDriver {
             log.info("Saved screenshot:" + screenshotName);
         } catch (IOException e) {
             log.error("Failed to make screenshot " + e.getMessage());
+        }
+    }
+
+    public void switchToRequiredTabInBrowser(String tabTitle) {
+        ArrayList<String> tabs = new ArrayList(driver.getWindowHandles());
+        for (String currentTab : tabs) {
+            driver.switchTo().window(currentTab);
+            if (driver.getTitle().equals(tabTitle)) {
+                break;
+            }
         }
     }
 

@@ -1,8 +1,8 @@
-package utils;
+package hooks;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import singleton.BrowserSingleton;
+import browser.BrowserProvider;
 
 public class Hooks {
 
@@ -10,11 +10,11 @@ public class Hooks {
 
     @Before
     public void beforeScenario(){
-        BrowserSingleton.getBrowser().get(BASE_URL);
+        BrowserProvider.getBrowser().get(BASE_URL);
     }
 
     @After
     public void afterScenario() {
-       BrowserSingleton.closeBrowser();
+       BrowserProvider.closeBrowser();
     }
 }
